@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HoaVoTwitter</string>
+
+    <string name="login_description">Please enter your username and password to login!</string>
 </resources>
