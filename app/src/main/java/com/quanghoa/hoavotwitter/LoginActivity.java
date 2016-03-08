@@ -1,19 +1,15 @@
 package com.quanghoa.hoavotwitter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.quanghoa.hoavotwitter.config.WebConstant;
-import com.quanghoa.hoavotwitter.controller.WebController;
+import com.quanghoa.hoavotwitter.control.BaseActivity;
+import com.quanghoa.hoavotwitter.controller.TwitterController;
 import com.quanghoa.hoavotwitter.model.LoginForm;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText editTextUsername;
     private EditText editTextPassword;
@@ -28,27 +24,29 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginButtonClick(View view){
         final LoginForm loginForm = new LoginForm();
-        loginForm.setLogin("foo");
-        loginForm.setPassword("bar");
+        loginForm.setLogin(editTextUsername.getText().toString());
+        loginForm.setPassword(editTextPassword.getText().toString());
 
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    String response2 = WebController.getInstance().request(WebConstant.LOGIN_API, WebConstant.METHOD_POST, loginForm);
-                    Log.i("VOQUANGHOA","REQUEST 1" +response2);
-                    String response1 = WebController.getInstance().request(WebConstant.TWEETS_API, WebConstant.METHOD_GET, null);
-                    Log.i("VOQUANGHOA","REQUEST 2" +response1);
-                    String a=response1;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (WebController.UnauthorizedException e) {
-                    e.printStackTrace();
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                } catch (WebController.UnexpectedException e) {
-                    e.printStackTrace();
+        if(loginForm.isValid()){
+            showLoadingDialog();
+            TwitterController.getInstance().login(loginForm, new TwitterController.APICallFeedback() {
+                public void onResponseOK(Object response) {
+                    showToastMessage("Login successfully");
+                    dismissLoadingDialog();
                 }
-            }
-        }).start();
+
+                public void onResponseNotOK() {
+                    showToastMessage(R.string.login_fail_warning);
+                    dismissLoadingDialog();
+                }
+
+                public void onFailed() {
+                    showToastMessage(R.string.network_error_warning);
+                    dismissLoadingDialog();
+                }
+            });
+        }else{
+            showToastMessage(R.string.invalid_login_form_warning);
+        }
     }
 }

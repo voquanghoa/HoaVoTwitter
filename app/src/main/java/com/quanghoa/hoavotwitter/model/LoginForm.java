@@ -22,4 +22,8 @@ public class LoginForm {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean isValid(){
+        return login!=null && login.length()>0;
+    }
 }

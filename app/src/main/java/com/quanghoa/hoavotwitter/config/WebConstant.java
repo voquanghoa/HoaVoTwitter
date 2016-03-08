@@ -15,7 +15,8 @@ public interface WebConstant {
     String METHOD_GET = "GET";
 
     //Define for Web connection
-    String COOKIES_HEADER = "Set-Cookie";
+    String COOKIE_SET_HEADER = "Set-Cookie";
+    String COOKIE_GET_HEADER = "Cookie";
     String CONTENT_TYPE_HEADER = "Content-type";
     String CONTENT_TYPE_JSON_VALUE = "application/json";
 }
