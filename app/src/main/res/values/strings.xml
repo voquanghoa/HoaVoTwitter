@@ -6,4 +6,10 @@
     <string name="login_description">Please enter your username and password to login!</string>
     <string name="invalid_login_form_warning">You should enter your username and password to login!</string>
     <string name="login_fail_warning">Unknown username or password. Please check again.</string>
+    <string name="title_activity_twitter">TwitterActivity</string>
+    <string name="your_password">Your username</string>
+    <string name="your_username">Your password</string>
+    <string name="action_settings">Settings</string>
+    <string name="login">Login</string>
+    <string name="loading">Loading...</string>
 </resources>

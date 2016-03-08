@@ -1,6 +1,7 @@
 package com.quanghoa.hoavotwitter.controller;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.quanghoa.hoavotwitter.config.WebConstant;
@@ -26,16 +27,8 @@ public class WebController implements WebConstant {
 
     private Gson gson;
     private List<String> cookie;
-    private static WebController instance;
 
-    public static synchronized WebController getInstance() {
-        if (instance == null) {
-            instance = new WebController();
-        }
-        return instance;
-    }
-
-    private WebController() {
+    public WebController() {
         gson = new Gson();
     }
 
@@ -49,12 +42,24 @@ public class WebController implements WebConstant {
         int responseCode = httpConn.getResponseCode();
         switch (responseCode) {
             case HttpURLConnection.HTTP_OK:
-                cookie = httpConn.getHeaderFields().get(COOKIE_SET_HEADER);
+                storeCookie(httpConn);
                 return IOUtil.readFullyInput(httpConn.getInputStream());
             case HttpURLConnection.HTTP_UNAUTHORIZED:
                 throw new UnauthorizedException();
             default:
                 throw new UnexpectedException();
+        }
+    }
+
+    public void forceClearCookie(){
+        cookie = null;
+    }
+
+    private void storeCookie(HttpURLConnection httpConn) {
+        List<String> newCookie = httpConn.getHeaderFields().get(COOKIE_SET_HEADER);
+
+        if(newCookie != null){
+            cookie = newCookie;
         }
     }
 
@@ -73,7 +78,6 @@ public class WebController implements WebConstant {
 
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestProperty(CONTENT_TYPE_HEADER, CONTENT_TYPE_JSON_VALUE);
-
         if (cookie != null) {
             String stringCookie = TextUtils.join(";", cookie);
             httpConn.setRequestProperty(COOKIE_GET_HEADER, stringCookie);

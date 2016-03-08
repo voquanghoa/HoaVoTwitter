@@ -1,6 +1,8 @@
 package com.quanghoa.hoavotwitter;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -26,22 +28,28 @@ public class LoginActivity extends BaseActivity {
         final LoginForm loginForm = new LoginForm();
         loginForm.setLogin(editTextUsername.getText().toString());
         loginForm.setPassword(editTextPassword.getText().toString());
+        hideKeyboard();
 
         if(loginForm.isValid()){
             showLoadingDialog();
             TwitterController.getInstance().login(loginForm, new TwitterController.APICallFeedback() {
                 public void onResponseOK(Object response) {
-                    showToastMessage("Login successfully");
-                    dismissLoadingDialog();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            startActivity(new Intent(LoginActivity.this, TwitterActivity.class));
+                        }
+                    });
                 }
 
                 public void onResponseNotOK() {
                     showToastMessage(R.string.login_fail_warning);
-                    dismissLoadingDialog();
                 }
 
                 public void onFailed() {
                     showToastMessage(R.string.network_error_warning);
+                }
+
+                public void onDone() {
                     dismissLoadingDialog();
                 }
             });

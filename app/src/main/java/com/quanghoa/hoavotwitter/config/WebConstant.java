@@ -13,6 +13,7 @@ public interface WebConstant {
 
     String METHOD_POST = "POST";
     String METHOD_GET = "GET";
+    String METHOD_DELETE = "DELETE";
 
     //Define for Web connection
     String COOKIE_SET_HEADER = "Set-Cookie";
