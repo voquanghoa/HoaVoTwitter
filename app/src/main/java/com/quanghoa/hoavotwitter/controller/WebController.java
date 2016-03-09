@@ -1,7 +1,6 @@
 package com.quanghoa.hoavotwitter.controller;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.quanghoa.hoavotwitter.config.WebConstant;
@@ -16,8 +15,7 @@ import java.util.List;
 /**
  * Created by voqua on 3/8/2016.
  */
-
-public class WebController implements WebConstant {
+class WebController implements WebConstant {
 
     public class UnauthorizedException extends Exception {
     }
@@ -25,7 +23,7 @@ public class WebController implements WebConstant {
     public class UnexpectedException extends Exception {
     }
 
-    private Gson gson;
+    private final Gson gson;
     private List<String> cookie;
 
     public WebController() {
@@ -68,7 +66,7 @@ public class WebController implements WebConstant {
             httpConn.setDoOutput(true);
             httpConn.setDoInput(true);
             OutputStream outputStream = httpConn.getOutputStream();
-            outputStream.write(gson.toJson(requestParam).toString().getBytes());
+            outputStream.write(gson.toJson(requestParam).getBytes());
             outputStream.flush();
         }
     }

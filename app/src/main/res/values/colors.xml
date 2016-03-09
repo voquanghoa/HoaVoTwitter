@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="twitter_odd_background_color">#eee</color>
+    <color name="twitter_even_background_color">#ddebf7</color>
 </resources>

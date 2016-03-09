@@ -13,18 +13,18 @@ import com.quanghoa.hoavotwitter.R;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    private ProgressDialog dialog;
+    private ProgressDialog progressDialog;
     protected void showLoadingDialog(){
         runOnUiThread(new Runnable() {
             public void run() {
-                if (dialog == null) {
-                    dialog = new ProgressDialog(BaseActivity.this);
-                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    dialog.setMessage(getString(R.string.loading));
-                    dialog.setIndeterminate(false);
-                    dialog.setCanceledOnTouchOutside(false);
+                if (progressDialog == null) {
+                    progressDialog = new ProgressDialog(BaseActivity.this);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setMessage(getString(R.string.loading));
+                    progressDialog.setIndeterminate(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
                 }
-                dialog.show();
+                progressDialog.show();
             }
         });
     }
@@ -32,8 +32,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void dismissLoadingDialog(){
         runOnUiThread(new Runnable() {
             public void run() {
-                if(dialog != null){
-                    dialog.dismiss();
+                if(progressDialog != null){
+                    progressDialog.dismiss();
                 }
             }
         });
@@ -54,11 +54,9 @@ public class BaseActivity extends AppCompatActivity {
     protected void hideKeyboard(){
         runOnUiThread(new Runnable() {
             public void run() {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
             }
         });
     }
-
-
 }

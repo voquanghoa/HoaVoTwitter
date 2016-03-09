@@ -2,7 +2,6 @@ package com.quanghoa.hoavotwitter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -24,7 +23,7 @@ public class LoginActivity extends BaseActivity {
         editTextPassword =(EditText) findViewById(R.id.txt_password);
     }
 
-    public void onLoginButtonClick(View view){
+    public void onLoginButtonClick(View actionView){
         final LoginForm loginForm = new LoginForm();
         loginForm.setLogin(editTextUsername.getText().toString());
         loginForm.setPassword(editTextPassword.getText().toString());

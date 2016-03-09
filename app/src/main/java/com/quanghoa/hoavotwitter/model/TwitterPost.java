@@ -1,6 +1,5 @@
 package com.quanghoa.hoavotwitter.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

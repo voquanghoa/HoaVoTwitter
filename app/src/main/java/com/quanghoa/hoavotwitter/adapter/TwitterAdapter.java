@@ -15,13 +15,12 @@ import com.quanghoa.hoavotwitter.presenter.TwitterPresenter;
  */
 public class TwitterAdapter extends BaseAdapter {
 
-    private Context context;
+    private final Context context;
+    private final TwitterPresenter twitterPresenter;
     private TwitterData twitterData;
-    private TwitterPresenter twitterPresenter;
 
-    public TwitterAdapter(Context context, TwitterData twitterData){
+    public TwitterAdapter(Context context) {
         this.context = context;
-        setTwitterData(twitterData);
         this.twitterPresenter = new TwitterPresenter();
     }
 
@@ -30,7 +29,7 @@ public class TwitterAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return this.twitterData==null?0:this.twitterData.size();
+        return this.twitterData == null ? 0 : this.twitterData.size();
     }
 
     public Object getItem(int position) {
@@ -42,11 +41,14 @@ public class TwitterAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView==null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.twitter_item_layout, parent, false);
         }
 
         twitterPresenter.showTwitterOnView(convertView, twitterData.get(position));
+
+        int background = (position & 1) == 0 ? R.drawable.twitter_item_even : R.drawable.twitter_item_odd;
+        convertView.setBackgroundResource(background);
 
         return convertView;
     }

@@ -1,10 +1,10 @@
 package com.quanghoa.hoavotwitter.presenter;
 
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.quanghoa.hoavotwitter.R;
+import com.quanghoa.hoavotwitter.control.InternetImageView;
 import com.quanghoa.hoavotwitter.model.TwitterPost;
 
 import java.util.List;
@@ -19,15 +19,14 @@ public class TwitterPresenter {
         showTextOnTextView(viewParent, R.id.txt_content, twitterPost.getContent());
         List<String> images = twitterPost.getImages();
 
-        WebView webView = ((WebView)viewParent.findViewById(R.id.wv_image));
+        InternetImageView internetImageView = ((InternetImageView)viewParent.findViewById(R.id.iiv_image));
         if(images!=null && images.size()>0){
-            webView.setVisibility(View.VISIBLE);
-            webView.loadUrl(images.get(0));
+            internetImageView.setVisibility(View.VISIBLE);
+            internetImageView.setImageUrl(images.get(0));
         }else{
-            webView.stopLoading();
-            webView.setVisibility(View.GONE);
+            internetImageView.setVisibility(View.GONE);
+            internetImageView.setImageUrl(null);
         }
-
     }
 
     private void showTextOnTextView(View viewParent, int textViewId, String text){

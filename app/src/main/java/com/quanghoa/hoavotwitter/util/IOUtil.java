@@ -13,7 +13,7 @@ public class IOUtil {
     public static String readFullyInput(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[AppConstant.DEFAULT_BUFFER_SIZE];
-        int bufferLength = 0;
+        int bufferLength;
 
         while ((bufferLength = inputStream.read(buffer)) > 0) {
             byteArrayOutputStream.write(buffer, 0, bufferLength);

@@ -18,8 +18,8 @@ public class TwitterController {
         void onDone();
     }
 
-    private Gson gson;
-    private WebController webController;
+    private final Gson gson;
+    private final WebController webController;
 
     private static TwitterController instance;
     private TwitterController() {

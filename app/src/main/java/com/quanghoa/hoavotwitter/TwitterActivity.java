@@ -1,14 +1,9 @@
 package com.quanghoa.hoavotwitter;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 
 import com.quanghoa.hoavotwitter.adapter.TwitterAdapter;
@@ -16,11 +11,11 @@ import com.quanghoa.hoavotwitter.control.BaseActivity;
 import com.quanghoa.hoavotwitter.controller.TwitterController;
 import com.quanghoa.hoavotwitter.model.TwitterData;
 
+
 public class TwitterActivity extends BaseActivity{
-    private ListView twitterContentListView;
     private TwitterAdapter twitterAdapter;
 
-    private TwitterController.APICallFeedback getTwitterCallback = new TwitterController.APICallFeedback() {
+    private final TwitterController.APICallFeedback getTwitterCallback = new TwitterController.APICallFeedback() {
         public void onResponseOK(Object response) {
             if(response != null && response instanceof TwitterData) {
                 TwitterData twitterData = (TwitterData) response;
@@ -36,11 +31,16 @@ public class TwitterActivity extends BaseActivity{
         }
 
         public void onResponseNotOK() {
-            showToastMessage(R.string.network_error_warning);
+            showToastMessage(R.string.login_request);
+            TwitterActivity.this.runOnUiThread(new Runnable() {
+                public void run() {
+                    finish();
+                }
+            });
         }
 
         public void onFailed() {
-            showToastMessage(R.string.unknown_error_warning);
+            showToastMessage(R.string.network_error_warning);
         }
 
         public void onDone(){
@@ -48,7 +48,7 @@ public class TwitterActivity extends BaseActivity{
         }
     };
 
-    private TwitterController.APICallFeedback logoutCallback = new TwitterController.APICallFeedback() {
+    private final TwitterController.APICallFeedback logoutCallback = new TwitterController.APICallFeedback() {
         public void onResponseOK(Object response) {
             TwitterActivity.this.runOnUiThread(new Runnable() {
                 public void run() {
@@ -58,17 +58,27 @@ public class TwitterActivity extends BaseActivity{
         }
 
         public void onResponseNotOK() {
-            showToastMessage(R.string.network_error_warning);
+            showToastMessage(R.string.unknown_error_warning);
         }
 
         public void onFailed() {
-            showToastMessage(R.string.unknown_error_warning);
+            showToastMessage(R.string.network_error_warning);
         }
 
         public void onDone(){
             dismissLoadingDialog();
         }
     };
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_twitter_layout);
+
+        twitterAdapter = new TwitterAdapter(this);
+        ((ListView)findViewById(R.id.lv_twitter_content)).setAdapter(twitterAdapter);
+
+        loadTwitterData();
+    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -87,16 +97,6 @@ public class TwitterActivity extends BaseActivity{
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_twitter, menu);
         return true;
-    }
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_twitter_layout);
-
-        twitterContentListView = (ListView)findViewById(R.id.lv_twitter_content);
-        twitterAdapter = new TwitterAdapter(this, null);
-        twitterContentListView.setAdapter(twitterAdapter);
-        loadTwitterData();
     }
 
     private void loadTwitterData(){
