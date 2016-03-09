@@ -11,8 +11,15 @@ import com.quanghoa.hoavotwitter.R;
 /**
  * Created by voqua on 3/8/2016.
  */
+
+/***
+ * The base of all activities
+ */
 public class BaseActivity extends AppCompatActivity {
 
+    /**
+     * Create and show the dialog in UI thread
+     */
     private ProgressDialog progressDialog;
     protected void showLoadingDialog(){
         runOnUiThread(new Runnable() {
@@ -29,6 +36,9 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Dismiss the showed dialog in UI thread
+     */
     protected void dismissLoadingDialog(){
         runOnUiThread(new Runnable() {
             public void run() {
@@ -39,6 +49,10 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    /***
+     * Show the message to user in UI thread
+     * @param message The message to show
+     */
     protected void showToastMessage(final String message){
         runOnUiThread(new Runnable() {
             public void run() {
@@ -47,10 +61,17 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    /***
+     * Show the message to user in UI thread
+     * @param messageId the id of message string to show
+     */
     protected void showToastMessage(int messageId){
         showToastMessage(getString(messageId));
     }
 
+    /***
+     * Hide the keyboard in UI thread
+     */
     protected void hideKeyboard(){
         runOnUiThread(new Runnable() {
             public void run() {

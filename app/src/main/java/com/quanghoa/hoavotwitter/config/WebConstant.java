@@ -7,10 +7,12 @@ public interface WebConstant {
     //Define for Web API
     String WEB_HOST_URL = "https://salty-mesa-4348.herokuapp.com";
 
+    //API name
     String LOGIN_API = "/login";
     String LOGOUT_API = "/logout";
     String TWEETS_API = "/tweets";
 
+    //Request method
     String METHOD_POST = "POST";
     String METHOD_GET = "GET";
     String METHOD_DELETE = "DELETE";

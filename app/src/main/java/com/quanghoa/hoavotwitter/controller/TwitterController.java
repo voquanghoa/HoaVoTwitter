@@ -10,11 +10,34 @@ import java.io.IOException;
 /**
  * Created by voqua on 3/8/2016.
  */
+
+/***
+ * Call the api via WebController and send the response to view
+ */
 public class TwitterController {
+    /***
+     * The feedback when a request finish
+     */
     public interface APICallFeedback {
+        /***
+         * Called when the request is finish successfully
+         * @param response The response object
+         */
         void onResponseOK(Object response);
+
+        /***
+         * Called when the request is finish but the server did not allow to get the data
+         */
         void onResponseNotOK();
+
+        /***
+         * Called when the request is failed, could not connect to server
+         */
         void onFailed();
+
+        /***
+         * Allways be called after the request finished
+         */
         void onDone();
     }
 
@@ -27,6 +50,10 @@ public class TwitterController {
         webController = new WebController();
     }
 
+    /***
+     * Get the singleton instance object
+     * @return
+     */
     public static synchronized TwitterController getInstance() {
         if (instance == null) {
             instance = new TwitterController();
@@ -34,14 +61,27 @@ public class TwitterController {
         return instance;
     }
 
+    /***
+     * Call the logout api
+     * @param feedback The feedback
+     */
     public void logout(final APICallFeedback feedback){
         sendHttpRequest(WebConstant.LOGOUT_API, WebConstant.METHOD_DELETE, null, null, feedback);
     }
 
+    /***
+     * Call the Twitters api
+     * @param feedback The feedback
+     */
     public void loadTwitters(final APICallFeedback feedback){
         sendHttpRequest(WebConstant.TWEETS_API, WebConstant.METHOD_GET, null, TwitterData.class, feedback);
     }
 
+    /***
+     * Call the login api
+     * @param loginForm The data to login (with username, password)
+     * @param feedback The feedback
+     */
     public void login(final LoginForm loginForm, final APICallFeedback feedback) {
         sendHttpRequest(WebConstant.LOGIN_API, WebConstant.METHOD_POST, loginForm, null, feedback);
     }
@@ -69,8 +109,9 @@ public class TwitterController {
                     feedback.onResponseNotOK();
                 } catch (WebController.UnexpectedException e) {
                     feedback.onFailed();
+                }finally {
+                    feedback.onDone();
                 }
-                feedback.onDone();
             }
         }).start();
     }
